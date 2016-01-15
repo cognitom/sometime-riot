@@ -4,11 +4,11 @@ import './time-picker-popup.tag'
 <time-picker>
 
   <button onclick={ click } ontouchstart={ click }>{ value } <span class="caret"></span></button>
+  <input if={ opts.name } name={ opts.name } type="hidden" value={ value }>
 
   <script>
-    this.mixin(domEvent)
-    this.mixin(syncEvent)
-    
+    this.mixin(domEvent).mixin(syncEvent)
+
     const
       popupDom = document.createElement('div'),
       popup = riot.mount(popupDom, 'time-picker-popup', opts)[0]
@@ -18,7 +18,7 @@ import './time-picker-popup.tag'
         deviceType = e.type == 'touchstart' ? 'tablet' : 'pc',
         rect = this.root.getBoundingClientRect(),
         y = rect.top + document.body.scrollTop,
-        x = rect.left + document.body.scrollLeft
+        x = rect.left + document.body.scrollLeft,
         top = y - 4 - this.value.split(':')[0] * 16,
         left = x - 3
       popup.activate(top < 5 ? 5 : top, left, deviceType)

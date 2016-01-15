@@ -1,6 +1,6 @@
 <demo>
 
-  <h2>Time picker</h2>
+  <h2>Sometime: time picker</h2>
   <p>Use the <code>&lt;time-picker&gt;</code> elements.</p>
   <section>
     <time-picker value={ time } onchange={ change } />

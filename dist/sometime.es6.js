@@ -199,10 +199,11 @@ riot.tag2('time-picker-popup', '<ul if="{active}" riot-style="top: {top}px; left
   };
 }, '{ }');
 
-riot.tag2('time-picker', '<button onclick="{click}" ontouchstart="{click}">{value} <span class="caret"></span></button>', 'time-picker,[riot-tag="time-picker"] { display: inline-block; background-color: white; } time-picker .caret::after,[riot-tag="time-picker"] .caret::after { content: "\\25BE"; } time-picker button,[riot-tag="time-picker"] button { display: inline-block; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.4; text-align: center; white-space: nowrap; vertical-align: middle; cursor: pointer; background-image: none; border: 1px solid transparent; border-radius: 4px; } time-picker button:focus,[riot-tag="time-picker"] button:focus { outline: thin dotted; outline: 5px auto -webkit-focus-ring-color; outline-offset: -2px; } time-picker button:hover,[riot-tag="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus { color: #333; text-decoration: none; } time-picker button:active,[riot-tag="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"] { background-image: none; outline: 0; box-shadow: inset 0 3px 2px rgba(0, 0, 0, .1); } time-picker button[disabled],[riot-tag="time-picker"] button[disabled] { pointer-events: none; cursor: not-allowed; box-shadow: none; opacity: .65; } time-picker button,[riot-tag="time-picker"] button { color: #333; background-color: #fff; border-color: #ccc } time-picker button:hover,[riot-tag="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus,time-picker button:active,[riot-tag="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"] { color: #333; background-color: #e6e6e6; border-color: #adadad }', '', function (opts) {
+riot.tag2('time-picker', '<button onclick="{click}" ontouchstart="{click}">{value} <span class="caret"></span></button> <input if="{opts.name}" name="{opts.name}" type="hidden" value="{value}">', 'time-picker,[riot-tag="time-picker"] { display: inline-block; background-color: white; } time-picker .caret::after,[riot-tag="time-picker"] .caret::after { content: "\\25BE"; } time-picker button,[riot-tag="time-picker"] button { display: inline-block; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.4; text-align: center; white-space: nowrap; vertical-align: middle; cursor: pointer; background-image: none; border: 1px solid transparent; border-radius: 4px; } time-picker button:focus,[riot-tag="time-picker"] button:focus { outline: thin dotted; outline: 5px auto -webkit-focus-ring-color; outline-offset: -2px; } time-picker button:hover,[riot-tag="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus { color: #333; text-decoration: none; } time-picker button:active,[riot-tag="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"] { background-image: none; outline: 0; box-shadow: inset 0 3px 2px rgba(0, 0, 0, .1); } time-picker button[disabled],[riot-tag="time-picker"] button[disabled] { pointer-events: none; cursor: not-allowed; box-shadow: none; opacity: .65; } time-picker button,[riot-tag="time-picker"] button { color: #333; background-color: #fff; border-color: #ccc } time-picker button:hover,[riot-tag="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus,time-picker button:active,[riot-tag="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"] { color: #333; background-color: #e6e6e6; border-color: #adadad }', '', function (opts) {
   var _this = this;
 
   this.mixin(domEvent).mixin(syncEvent);
+
   var popupDom = document.createElement('div'),
       popup = riot.mount(popupDom, 'time-picker-popup', opts)[0];
 
@@ -210,8 +211,9 @@ riot.tag2('time-picker', '<button onclick="{click}" ontouchstart="{click}">{valu
     var deviceType = e.type == 'touchstart' ? 'tablet' : 'pc',
         rect = _this.root.getBoundingClientRect(),
         y = rect.top + document.body.scrollTop,
-        x = rect.left + document.body.scrollLeft;
-    top = y - 4 - _this.value.split(':')[0] * 16, left = x - 3;
+        x = rect.left + document.body.scrollLeft,
+        top = y - 4 - _this.value.split(':')[0] * 16,
+        left = x - 3;
     popup.activate(top < 5 ? 5 : top, left, deviceType);
   };
 

@@ -1,6 +1,6 @@
 {
   "name": "sometime-riot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Timepicker for Riot",
   "jsnext:main": "dist/sometime.es6.js",
   "main": "dist/sometime.cjs.js",
@@ -43,12 +43,14 @@
     "uglify-js": "^2.6.1"
   },
   "scripts": {
+    "build": "node rollup.js",
     "pretest": "npm run build",
     "test": "npm run eslint && npm run karma",
-    "prepublish": "npm run build",
-    "build": "node rollup.js",
-    "watch": "chokidar 'riot/*.js' -c 'npm run build'",
-    "eslint": "eslint -c ./.eslintrc *.js",
-    "karma": "karma start test/karma.conf.js"
+    "eslint": "eslint -c ./.eslintrc src/*.js",
+    "karma": "karma start test/karma.conf.js",
+    "server": "browser-sync start --files 'dist/*.js, demo/*' --server --startPath 'demo/'",
+    "watch": "chokidar 'src/*' -c 'npm run build'",
+    "start": "npm run server & npm run watch",
+    "prepublish": "npm run build"
   }
 }
