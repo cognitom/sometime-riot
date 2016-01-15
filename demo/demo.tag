@@ -5,13 +5,13 @@
   <section>
     <time-picker value={ time } onchange={ change } />
   </section>
+  <p>Selected time: { time }</p>
 
   <script>
-    var self = this
-    self.time = '12:00'
+    this.time = '12:00'
 
     change (e) {
-      self.time = e.target.value
+      this.time = e.target.value
     }
   </script>
 
