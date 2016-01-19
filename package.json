@@ -1,6 +1,6 @@
 {
   "name": "sometime-riot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Timepicker for Riot",
   "jsnext:main": "dist/sometime.es6.js",
   "main": "dist/sometime.cjs.js",
