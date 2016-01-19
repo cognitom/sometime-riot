@@ -1,6 +1,6 @@
 {
   "name": "sometime-riot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Timepicker for Riot",
   "jsnext:main": "dist/sometime.es6.js",
   "main": "dist/sometime.cjs.js",
@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "riot": "^2.3.13",
-    "riot-mixin-pack": "github:cognitom/riot-mixin-pack"
+    "riot-mixin-pack": "^0.1.6"
   },
   "devDependencies": {
     "babel-preset-es2015-rollup": "^1.0.0",
@@ -31,6 +31,7 @@
     "karma-mocha": "^0.2.1",
     "karma-mocha-reporter": "^1.1.5",
     "karma-phantomjs-launcher": "^0.2.3",
+    "karma-riot": "^1.0.1",
     "mocha": "^2.3.4",
     "phantomjs": "^1.9.19",
     "riot-compiler": "^2.3.20",

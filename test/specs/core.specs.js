@@ -1,22 +1,21 @@
 describe('Core specs', function() {
+  var appDom // mounting point
+  var app // reference to the tag
 
-  var counter = 0, $, $$
-
-  before(function() {
-    $ = document.querySelector.bind(document)
-    $$ = document.querySelectorAll.bind(document)
-  })
-
-  after(function() {
-
+  beforeEach(function() {
+    // create mounting points
+    appDom = document.createElement('div')
+    document.body.appendChild(appDom)
   })
 
   afterEach(function() {
-    counter = 0
+    if (app) app.unmount()
   })
 
-  it('time selected', function() {
-    // TODO: create test
+  it('displays the specified time', function() {
+    app = riot.mount(appDom, 'time-picker', { value: '13:30' })[0]
+    expect(app.value).to.be('13:30')
+    expect(app.root.querySelector('button').textContent).to.be('13:30 ')
   })
 
 })
