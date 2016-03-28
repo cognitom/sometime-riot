@@ -4,7 +4,7 @@ Simple and compact timepicker.
 
 - See [demo](http://cognitom.github.io/sometime-riot/).
 
-![demo](demo.gif)
+![demo](http://cognitom.github.io/sometime-riot/demo.gif)
 
 ## Install
 
