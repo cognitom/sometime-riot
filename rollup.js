@@ -1,16 +1,15 @@
 const
-  rollup       = require('rollup'),
-  babel        = require('rollup-plugin-babel'),
-  npm          = require('rollup-plugin-npm'),
-  commonjs     = require('rollup-plugin-commonjs'),
-  createFilter = require('rollup-pluginutils').createFilter,
-  compiler     = require('riot-compiler')
+  rollup   = require('rollup'),
+  babel    = require('rollup-plugin-babel'),
+  resolve  = require('rollup-plugin-node-resolve'),
+  commonjs = require('rollup-plugin-commonjs'),
+  riot     = require('rollup-plugin-riot')
 
 rollup
   .rollup({
     entry: 'src/index.js',
     external: ['riot'],
-    plugins: [riot(), npm({ jsnext: true }), commonjs(), babel()]
+    plugins: [riot(), resolve({ jsnext: true }), commonjs(), babel()]
   })
   .then(bundle => {
     bundle.write({
@@ -19,6 +18,18 @@ rollup
       globals: { riot: 'riot' },
       dest: 'dist/sometime.js'
     })
+  })
+  .catch(error => {
+    console.error(error)
+  })
+
+rollup
+  .rollup({
+    entry: 'src/index.js',
+    external: ['riot', 'riot-mixin-pack'],
+    plugins: [riot(), babel()]
+  })
+  .then(bundle => {
     bundle.write({ format: 'es6', dest: 'dist/sometime.es6.js' })
     bundle.write({ format: 'amd', dest: 'dist/sometime.amd.js' })
     bundle.write({ format: 'cjs', dest: 'dist/sometime.cjs.js' })
@@ -26,17 +37,3 @@ rollup
   .catch(error => {
     console.error(error)
   })
-
-/**
- * Simple inline-plugin for Riot.js
- */
-function riot() {
-  const frag = "import riot from 'riot';"
-  const filter = createFilter('**/*.tag') // transform tag files only
-  return {
-    transform (code, id) {
-      if (!filter(id)) return null
-      return frag + compiler.compile(code)
-    }
-  }
-}

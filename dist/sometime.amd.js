@@ -1,52 +1,8 @@
-define(['riot'], function (riot) { 'use strict';
+define(['riot', 'riot-mixin-pack'], function (riot, riotMixinPack) { 'use strict';
 
   riot = 'default' in riot ? riot['default'] : riot;
 
-  var syncEvent = {
-    /** Init mixin on each tag */
-    init: function init() {
-      var _this = this;
-
-      this._shouldSyncFromOpts = true;
-      this.on('update', function () {
-        if (_this._shouldSyncFromOpts) _this.trigger('sync');
-        _this._shouldSyncFromOpts = true;
-      });
-    },
-
-    /** Skip sync event once */
-    skipSync: function skipSync() {
-      this._shouldSyncFromOpts = false;
-      return this; // return this for method chain
-    }
-  };
-
-  var domEvent = {
-    /**
-     * Trigger Event on DOM (root element of the tag)
-     * @param { string } eventName - the name of the event. ex: 'change'
-     */
-    triggerDomEvent: function triggerDomEvent(eventName) {
-      var _this = this;
-
-      setTimeout(function () {
-        var e;
-        if (typeof Event == 'function') {
-          // Standard browsers
-          e = new Event(eventName);
-        } else {
-          // IE 9 ~ 11
-          e = document.createEvent('Event');
-          e.initEvent(eventName, true, true);
-        }
-        /** dispatch an event */
-        _this.root.dispatchEvent(e);
-      }, 0);
-      return this; // return this for method chain
-    }
-  };
-
-  riot.tag2('time-picker-popup', '<ul if="{active}" riot-style="top: {top}px; left: {left}px"> <li each="{hours}"> {hh % 2 ? \'&middot;\' : hh + \':00\'} </li> </ul> <ol if="{active}" riot-style="top: {top2}px; left: {left2}px; display: {subMenuIsOpen ? \'block\' : \'none\'}" class="{roundLeft: roundLeft}"> <li onmouseover="{mouseover(\'00\')}" onclick="{done}">{hh}:{mm}</li> <li onmouseover="{mouseover(\'05\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'10\')}" onclick="{done}">10</li> <li onmouseover="{mouseover(\'15\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'20\')}" onclick="{done}">20</li> <li onmouseover="{mouseover(\'25\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'30\')}" onclick="{done}">30</li> <li onmouseover="{mouseover(\'35\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'40\')}" onclick="{done}">40</li> <li onmouseover="{mouseover(\'45\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'50\')}" onclick="{done}">50</li> <li onmouseover="{mouseover(\'55\')}" onclick="{done}">&middot;</li> </ol>', 'time-picker-popup ul,[riot-tag="time-picker-popup"] ul { position: absolute; z-index: 1000; float: left; padding: 10px 0; margin: 0; font-size: 14px; text-align: left; list-style: none; background-color: #fff; background-clip: padding-box; border: 1px solid #ccc; border: 1px solid rgba(0, 0, 0, .15); border-radius: 4px; box-shadow: 0 6px 12px rgba(0, 0, 0, .175); } time-picker-popup ul > li,[riot-tag="time-picker-popup"] ul > li { padding: 0 15px; line-height: 16px; color: #666; position: relative; text-align: center; } time-picker-popup ol,[riot-tag="time-picker-popup"] ol { position: absolute; white-space: nowrap; z-index: 1001; list-style: none; padding: 3px 13px; margin: 0; color: white; text-decoration: none; background-color: #3879d9; cursor: pointer; border-top-right-radius: 4px; border-bottom-right-radius: 4px; box-shadow: 0 3px 6px rgba(0, 0, 0, .175); transition: left .2s; } time-picker-popup ol.roundLeft,[riot-tag="time-picker-popup"] ol.roundLeft { border-top-left-radius: 4px; border-bottom-left-radius: 4px; } time-picker-popup ol > li,[riot-tag="time-picker-popup"] ol > li { display: inline-block; margin: 0; padding: 0 2px; min-width: 13px; text-align: center; line-height: 24px; border-radius: 4px; } time-picker-popup ol > li + li,[riot-tag="time-picker-popup"] ol > li + li { margin-left: -4px; color: rgba(255,255,255,.65) } time-picker-popup ol > li:hover,[riot-tag="time-picker-popup"] ol > li:hover { background-color: #528ce1; color: white; }', '', function (opts) {
+  riot.tag2('time-picker-popup', '<ul if="{active}" riot-style="top: {top}px; left: {left}px"> <li each="{hours}"> {hh % 2 ? \'&middot;\' : hh + \':00\'} </li> </ul> <ol if="{active}" riot-style="top: {top2}px; left: {left2}px; display: {subMenuIsOpen ? \'block\' : \'none\'}" class="{roundLeft: roundLeft}"> <li onmouseover="{mouseover(\'00\')}" onclick="{done}">{hh}:{mm}</li> <li onmouseover="{mouseover(\'05\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'10\')}" onclick="{done}">10</li> <li onmouseover="{mouseover(\'15\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'20\')}" onclick="{done}">20</li> <li onmouseover="{mouseover(\'25\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'30\')}" onclick="{done}">30</li> <li onmouseover="{mouseover(\'35\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'40\')}" onclick="{done}">40</li> <li onmouseover="{mouseover(\'45\')}" onclick="{done}">&middot;</li> <li onmouseover="{mouseover(\'50\')}" onclick="{done}">50</li> <li onmouseover="{mouseover(\'55\')}" onclick="{done}">&middot;</li> </ol>', 'time-picker-popup ul,[riot-tag="time-picker-popup"] ul,[data-is="time-picker-popup"] ul{ position: absolute; z-index: 1000; float: left; padding: 10px 0; margin: 0; font-size: 14px; text-align: left; list-style: none; background-color: #fff; background-clip: padding-box; border: 1px solid #ccc; border: 1px solid rgba(0, 0, 0, .15); border-radius: 4px; box-shadow: 0 6px 12px rgba(0, 0, 0, .175); } time-picker-popup ul > li,[riot-tag="time-picker-popup"] ul > li,[data-is="time-picker-popup"] ul > li{ padding: 0 15px; line-height: 16px; color: #666; position: relative; text-align: center; } time-picker-popup ol,[riot-tag="time-picker-popup"] ol,[data-is="time-picker-popup"] ol{ position: absolute; white-space: nowrap; z-index: 1001; list-style: none; padding: 3px 13px; margin: 0; color: white; text-decoration: none; background-color: #3879d9; cursor: pointer; border-top-right-radius: 4px; border-bottom-right-radius: 4px; box-shadow: 0 3px 6px rgba(0, 0, 0, .175); transition: left .2s; } time-picker-popup ol.roundLeft,[riot-tag="time-picker-popup"] ol.roundLeft,[data-is="time-picker-popup"] ol.roundLeft{ border-top-left-radius: 4px; border-bottom-left-radius: 4px; } time-picker-popup ol > li,[riot-tag="time-picker-popup"] ol > li,[data-is="time-picker-popup"] ol > li{ display: inline-block; margin: 0; padding: 0 2px; min-width: 13px; text-align: center; line-height: 24px; border-radius: 4px; } time-picker-popup ol > li + li,[riot-tag="time-picker-popup"] ol > li + li,[data-is="time-picker-popup"] ol > li + li{ margin-left: -4px; color: rgba(255,255,255,.65) } time-picker-popup ol > li:hover,[riot-tag="time-picker-popup"] ol > li:hover,[data-is="time-picker-popup"] ol > li:hover{ background-color: #528ce1; color: white; }', '', function (opts) {
     var _this = this;
 
     var ITEM_HEIGHT = 16;
@@ -199,12 +155,12 @@ define(['riot'], function (riot) { 'use strict';
       _this.trigger('change', _this.hh + ':' + _this.mm);
       _this.deactivate(e);
     };
-  }, '{ }');
+  });
 
-  riot.tag2('time-picker', '<button onclick="{click}" ontouchstart="{click}">{value} <span class="caret"></span></button> <input if="{opts.name}" name="{opts.name}" type="hidden" value="{value}">', 'time-picker,[riot-tag="time-picker"] { display: inline-block; background-color: white; } time-picker .caret::after,[riot-tag="time-picker"] .caret::after { content: "\\25BE"; } time-picker button,[riot-tag="time-picker"] button { display: inline-block; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.4; text-align: center; white-space: nowrap; vertical-align: middle; cursor: pointer; background-image: none; border: 1px solid transparent; border-radius: 4px; } time-picker button:focus,[riot-tag="time-picker"] button:focus { outline: thin dotted; outline: 5px auto -webkit-focus-ring-color; outline-offset: -2px; } time-picker button:hover,[riot-tag="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus { color: #333; text-decoration: none; } time-picker button:active,[riot-tag="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"] { background-image: none; outline: 0; box-shadow: inset 0 3px 2px rgba(0, 0, 0, .1); } time-picker button[disabled],[riot-tag="time-picker"] button[disabled] { pointer-events: none; cursor: not-allowed; box-shadow: none; opacity: .65; } time-picker button,[riot-tag="time-picker"] button { color: #333; background-color: #fff; border-color: #ccc } time-picker button:hover,[riot-tag="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus,time-picker button:active,[riot-tag="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"] { color: #333; background-color: #e6e6e6; border-color: #adadad }', '', function (opts) {
+  riot.tag2('time-picker', '<button onclick="{click}" ontouchstart="{click}">{value} <span class="caret"></span></button> <input if="{opts.name}" name="{opts.name}" type="hidden" value="{value}">', 'time-picker,[riot-tag="time-picker"],[data-is="time-picker"]{ display: inline-block; background-color: white; } time-picker .caret::after,[riot-tag="time-picker"] .caret::after,[data-is="time-picker"] .caret::after{ content: "\\25BE"; } time-picker button,[riot-tag="time-picker"] button,[data-is="time-picker"] button{ display: inline-block; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.4; text-align: center; white-space: nowrap; vertical-align: middle; cursor: pointer; background-image: none; border: 1px solid transparent; border-radius: 4px; } time-picker button:focus,[riot-tag="time-picker"] button:focus,[data-is="time-picker"] button:focus{ outline: thin dotted; outline: 5px auto -webkit-focus-ring-color; outline-offset: -2px; } time-picker button:hover,[riot-tag="time-picker"] button:hover,[data-is="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus,[data-is="time-picker"] button:focus{ color: #333; text-decoration: none; } time-picker button:active,[riot-tag="time-picker"] button:active,[data-is="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"],[data-is="time-picker"] button[data-active="yes"]{ background-image: none; outline: 0; box-shadow: inset 0 3px 2px rgba(0, 0, 0, .1); } time-picker button[disabled],[riot-tag="time-picker"] button[disabled],[data-is="time-picker"] button[disabled]{ pointer-events: none; cursor: not-allowed; box-shadow: none; opacity: .65; } time-picker button,[riot-tag="time-picker"] button,[data-is="time-picker"] button{ color: #333; background-color: #fff; border-color: #ccc } time-picker button:hover,[riot-tag="time-picker"] button:hover,[data-is="time-picker"] button:hover,time-picker button:focus,[riot-tag="time-picker"] button:focus,[data-is="time-picker"] button:focus,time-picker button:active,[riot-tag="time-picker"] button:active,[data-is="time-picker"] button:active,time-picker button[data-active="yes"],[riot-tag="time-picker"] button[data-active="yes"],[data-is="time-picker"] button[data-active="yes"]{ color: #333; background-color: #e6e6e6; border-color: #adadad }', '', function (opts) {
     var _this = this;
 
-    this.mixin(domEvent).mixin(syncEvent);
+    this.mixin(riotMixinPack.domEvent).mixin(riotMixinPack.syncEvent);
 
     var popupDom = document.createElement('div'),
         popup = riot.mount(popupDom, 'time-picker-popup', opts)[0];
@@ -240,6 +196,6 @@ define(['riot'], function (riot) { 'use strict';
 
       _this.triggerDomEvent('change');
     });
-  }, '{ }');
+  });
 
 });
