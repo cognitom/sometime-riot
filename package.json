@@ -1,6 +1,6 @@
 {
   "name": "sometime-riot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Timepicker for Riot",
   "jsnext:main": "dist/sometime.es6.js",
   "main": "dist/sometime.cjs.js",
@@ -26,6 +26,7 @@
     "chokidar-cli": "^1.2.0",
     "eslint": "^2.5.1",
     "expect.js": "^0.3.1",
+    "gh-pages": "^0.11.0",
     "karma": "^0.13.22",
     "karma-mocha": "^0.2.2",
     "karma-mocha-reporter": "^2.0.0",
@@ -45,11 +46,12 @@
   },
   "scripts": {
     "build": "node rollup.js",
+    "deploy": "gh-pages -d dist",
     "pretest": "npm run build",
     "test": "npm run eslint && npm run karma",
     "eslint": "eslint src/*.js",
     "karma": "karma start test/karma.conf.js",
-    "server": "browser-sync start --files 'dist/*.js, demo/*' --server --startPath 'demo/'",
+    "server": "browser-sync start --files 'dist/*' --server 'dist/'",
     "watch": "chokidar 'src/*' -c 'npm run build'",
     "start": "npm run server & npm run watch",
     "prepublish": "npm run build"
